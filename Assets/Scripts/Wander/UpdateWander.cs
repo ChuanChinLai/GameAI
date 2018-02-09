@@ -19,7 +19,6 @@ public class UpdateWander : MonoBehaviour
     void Start ()
     {
         RB = GetComponent<Rigidbody>();
-
         WD = GetComponent<Wander>();
 	}
 	

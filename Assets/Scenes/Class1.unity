@@ -1189,13 +1189,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1473619031}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_Children: []
   m_Father: {fileID: 1835118008}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!23 &1473619033
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1439,13 +1439,14 @@ GameObject:
   - component: {fileID: 1835118010}
   - component: {fileID: 1835118011}
   - component: {fileID: 1835118012}
+  - component: {fileID: 1835118013}
   m_Layer: 0
   m_Name: Kinematic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1835118000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1631,6 +1632,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1784721350599056, guid: 77fe0e9950afec045af108fc9eed5712, type: 2}
+--- !u!114 &1835118013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1835117999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 335a81c77086afd4da113707ccf5e65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderOffset: 1.5
+  wanderRadius: 4
+  wanderRate: 0.4
+  wanderOrientation: 0
+  maxAcceleration: 10
 --- !u!1 &1994602932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,7 +1668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1994602933
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -303,6 +303,8 @@
     <Compile Include="Assets\Scripts\Steering\Structs\KinematicSteeringOutput.cs" />
     <Compile Include="Assets\Scripts\Steering\Structs\SteeringParams.cs" />
     <Compile Include="Assets\Scripts\SystemIO.cs" />
+    <Compile Include="Assets\Scripts\Wander\UpdateWander.cs" />
+    <Compile Include="Assets\Scripts\Wander\Wander.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

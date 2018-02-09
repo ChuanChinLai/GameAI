@@ -19,7 +19,7 @@ public class Wander : MonoBehaviour
 
     public Vector3 getSteering()
     {
-        float characterOrientation = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
+        float characterOrientation = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
 
         wanderOrientation += randomBinomial() * wanderRate;
 
