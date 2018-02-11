@@ -9,12 +9,13 @@ public class Wander : MonoBehaviour
     public float wanderRate = 0.4f;
     public float wanderOrientation = 0;
 
-    public float maxAcceleration = 10f;
+
+    float maxAcceleration;
 
     // Use this for initialization
     void Start ()
     {
-		
+        maxAcceleration = GetComponent<UpdateBehaviour>().maxAcceleration;
 	}
 
     public Vector3 getSteering()
