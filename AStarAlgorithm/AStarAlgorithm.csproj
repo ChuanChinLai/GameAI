@@ -78,7 +78,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AlignGraphsGenerator.cs" />
+    <Compile Include="Assets\Scripts\Dijkstra.cs" />
     <Compile Include="Assets\Scripts\GraphsGenerator.cs" />
+    <Compile Include="Assets\Scripts\Node.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
