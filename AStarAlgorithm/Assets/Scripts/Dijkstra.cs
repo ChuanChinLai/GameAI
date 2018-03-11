@@ -25,7 +25,7 @@ public class Dijkstra : MonoBehaviour
             float[,] graph = GraphsGenerator.GetComponent<GraphsGenerator>().graph;
             int NumNodes = GraphsGenerator.GetComponent<GraphsGenerator>().NumNodes;
 
-            DijkstraAlgorithm(graph, NumNodes, StartNode);
+            DijkstraAlgorithm(graph, NumNodes, StartNode, 100);
         }
 	}
 
@@ -77,7 +77,7 @@ public class Dijkstra : MonoBehaviour
     }
 
 
-    void DijkstraAlgorithm(float[,] graph, int V, int source)
+    void DijkstraAlgorithm(float[,] graph, int V, int source, int end)
     {
         Debug.Assert(source < V - 1);
 
@@ -85,8 +85,7 @@ public class Dijkstra : MonoBehaviour
         List<bool> sptSet = new List<bool>();
         List<int> parent = new List<int>();
 
-
-
+     
         for (int i = 0; i < V; i++)
         {
             parent.Add(-1);
@@ -114,5 +113,13 @@ public class Dijkstra : MonoBehaviour
         }
 
         printSolution(dist, V, parent);
+    }
+
+
+
+
+    void HeuristicEstimate()
+    {
+
     }
 }

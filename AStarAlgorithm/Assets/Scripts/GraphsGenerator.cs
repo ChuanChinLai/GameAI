@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,13 +29,20 @@ public class GraphsGenerator : MonoBehaviour
 
         CreateGraphs();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         DisplayGraphs();
-    }
 
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Debug.Log("Output Node");
+
+            OutputToDisk();
+        }
+    }
 
 
     void CreateGraphs()
@@ -72,6 +80,8 @@ public class GraphsGenerator : MonoBehaviour
 
                     graph[i, tmpList[index].GetComponent<Node>().id] = dis;
                     graph[tmpList[index].GetComponent<Node>().id, i] = dis;
+
+                    tmpList.RemoveAt(index);
                 }
                 else
                 {
@@ -91,6 +101,27 @@ public class GraphsGenerator : MonoBehaviour
                 Debug.DrawLine(GO.transform.position, node.Key.transform.position, Color.red);
             }
         }
+    }
+
+
+
+    void OutputToDisk()
+    {
+        StreamWriter sw;
+
+        string path = "C:\\Users\\u1070737\\Desktop\\Test2.txt";
+
+        sw = File.CreateText(path);
+
+        foreach (GameObject GO in NodeList)
+        {
+            foreach (KeyValuePair<GameObject, float> node in GO.GetComponent<Node>().m_AdjacentNodeList)
+            {
+                sw.WriteLine("(" + GO.GetComponent<Node>().id.ToString() + "," + node.Key.GetComponent<Node>().id.ToString() + "," + node.Value + ")");
+            }
+        }
+
+        sw.Close();
     }
 }
 
