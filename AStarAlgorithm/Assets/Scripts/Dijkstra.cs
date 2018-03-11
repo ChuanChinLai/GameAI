@@ -1,13 +1,20 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Dijkstra : MonoBehaviour
 {
     public GameObject GraphsGenerator;
-    public int StartNode = 0;
     string Path;
 
+    public double ShortestPathCost { get; private set; }
+
+    public GameObject StartObj;
+    public GameObject EndObj;
+
+
+    int NodeVisits = 0;
 
     // Use this for initialization
     void Start ()
@@ -18,108 +25,81 @@ public class Dijkstra : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.D))
         {
             Debug.Log("Run DijkstraAlgorithm");
 
-            float[,] graph = GraphsGenerator.GetComponent<GraphsGenerator>().graph;
-            int NumNodes = GraphsGenerator.GetComponent<GraphsGenerator>().NumNodes;
+            var res = GetShortestPathDijikstra();
 
-            DijkstraAlgorithm(graph, NumNodes, StartNode, 100);
+            foreach(Node node in res)
+            {
+                Debug.Log(node.Id);
+            }
+
+            Debug.Log("Node Visited: " + NodeVisits);
+            Debug.Log("Total Distance: " + ShortestPathCost);
         }
 	}
 
-    int minDistance(List<float> dist, List<bool> sptSet)
+
+    private void BuildShortestPath(List<Node> list, Node node)
     {
-        // Initialize min value
-        float min = float.MaxValue;
-        int min_index = -1;
-
-        for (int v = 0; v < dist.Count; v++)
-        {
-            if (sptSet[v] == false && dist[v] <= min)
-            {
-                min = dist[v];
-                min_index = v;
-            }
-        }
-
-        return min_index;
-    }
-
-    void printPath(List<int> parent, int j)
-    {
-        // Base Case : If j is source
-        if (parent[j] == -1)
+        if (node.NearestToStart == null)
             return;
-
-        printPath(parent, parent[j]);
-        Path = Path + "->" + j;
+        list.Add(node.NearestToStart);
+        ShortestPathCost += node.Connections.Single(x => x.ConnectedNode == node.NearestToStart).Cost;
+        BuildShortestPath(list, node.NearestToStart);
     }
 
 
-    void printSolution(List<float> dist, int n, List<int> parent)
+    public List<Node> GetShortestPathDijikstra()
     {
-        int src = StartNode;
+        Node End = EndObj.GetComponent<Node>();
 
-        Debug.Log("Vertex\t  Distance\tPath");
-
-        for (int i = 1; i < n; i++)
-        {
-            Debug.Log(src + "->" + i + " " + dist[i]);
-
-            Path = src.ToString();
-
-            printPath(parent, i);
-
-            Debug.Log(Path);
-        }
+        DijkstraSearch();
+        var shortestPath = new List<Node>();
+        shortestPath.Add(End);
+        BuildShortestPath(shortestPath, End);
+        shortestPath.Reverse();
+        return shortestPath;
     }
 
 
-    void DijkstraAlgorithm(float[,] graph, int V, int source, int end)
+    void DijkstraSearch()
     {
-        Debug.Assert(source < V - 1);
+        NodeVisits = 0;
+        ShortestPathCost = 0;
 
-        List<float> dist = new List<float>();
-        List<bool> sptSet = new List<bool>();
-        List<int> parent = new List<int>();
+        Node Start = StartObj.GetComponent<Node>();
+        Start.MinCostToStart = 0;
 
-     
-        for (int i = 0; i < V; i++)
+        Node End = EndObj.GetComponent<Node>();
+
+        var prioQueue = new List<Node>();
+
+        prioQueue.Add(Start);
+        do
         {
-            parent.Add(-1);
-            dist.Add(float.MaxValue);
-            sptSet.Add(false);
-        }
-
-        dist[source] = 0;
-
-
-        for(int count = 0; count < V - 1; count++)
-        {
-
-            int u = minDistance(dist, sptSet);
-            sptSet[u] = true;
-
-            for(int v = 0; v < V; v++)
+            NodeVisits++;
+            prioQueue = prioQueue.OrderBy(x => x.MinCostToStart.Value).ToList();
+            var node = prioQueue.First();
+            prioQueue.Remove(node);
+            foreach (var cnn in node.Connections.OrderBy(x => x.Cost))
             {
-                if(!sptSet[v] && !graph[u, v].Equals(0) && dist[u] + graph[u, v] < dist[v])
+                var childNode = cnn.ConnectedNode;
+                if (childNode.Visited)
+                    continue;
+                if (childNode.MinCostToStart == null || node.MinCostToStart + cnn.Cost < childNode.MinCostToStart)
                 {
-                    parent[v] = u;
-                    dist[v] = dist[u] + graph[u, v];
+                    childNode.MinCostToStart = node.MinCostToStart + cnn.Cost;
+                    childNode.NearestToStart = node;
+                    if (!prioQueue.Contains(childNode))
+                        prioQueue.Add(childNode);
                 }
             }
-        }
-
-        printSolution(dist, V, parent);
-    }
-
-
-
-
-    void HeuristicEstimate()
-    {
-
+            node.Visited = true;
+            if (node == End)
+                return;
+        } while (prioQueue.Any());
     }
 }

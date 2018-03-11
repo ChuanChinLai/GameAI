@@ -36,7 +36,7 @@ public class AlignGraphsGenerator : MonoBehaviour
                 Vector3 pos = new Vector3(i, 0, j);
                 GameObject GO = Instantiate(NodeGameObject, pos, Quaternion.identity);
                 GO.name = "Node" + nodeID;
-                GO.GetComponent<Node>().id = nodeID++;
+                GO.GetComponent<Node>().Id = nodeID++;
                 NodeList.Add(GO);
             }
         }
@@ -50,14 +50,11 @@ public class AlignGraphsGenerator : MonoBehaviour
 
                 if (Physics.Raycast(NodeList[i].transform.position, fwd, out hit, 1))
                 {
-                    if (!NodeList[i].GetComponent<Node>().m_AdjacentNodeList.ContainsKey(hit.transform.gameObject))
-                    {
-                        NodeList[i].GetComponent<Node>().m_AdjacentNodeList.Add(hit.transform.gameObject, 1);
-                        hit.transform.gameObject.GetComponent<Node>().m_AdjacentNodeList.Add(NodeList[i], 1);
-
-                        graph[i, hit.transform.gameObject.GetComponent<Node>().id] = 1;
-                        graph[hit.transform.gameObject.GetComponent<Node>().id, i] = 1;
-                    }
+                    Edge edge = new Edge();
+                    edge.Cost = 1;
+                    edge.ConnectedNode = hit.transform.gameObject.GetComponent<Node>();
+                    NodeList[i].GetComponent<Node>().Connections.Add(edge);
+                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
                 }
             }
 
@@ -66,14 +63,11 @@ public class AlignGraphsGenerator : MonoBehaviour
 
                 if (Physics.Raycast(NodeList[i].transform.position, back, out hit, 1))
                 {
-                    if (!NodeList[i].GetComponent<Node>().m_AdjacentNodeList.ContainsKey(hit.transform.gameObject))
-                    {
-                        NodeList[i].GetComponent<Node>().m_AdjacentNodeList.Add(hit.transform.gameObject, 1);
-                        hit.transform.gameObject.GetComponent<Node>().m_AdjacentNodeList.Add(NodeList[i], 1);
-
-                        graph[i, hit.transform.gameObject.GetComponent<Node>().id] = 1;
-                        graph[hit.transform.gameObject.GetComponent<Node>().id, i] = 1;
-                    }
+                    Edge edge = new Edge();
+                    edge.Cost = 1;
+                    edge.ConnectedNode = hit.transform.gameObject.GetComponent<Node>();
+                    NodeList[i].GetComponent<Node>().Connections.Add(edge);
+                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
                 }
             }
 
@@ -82,14 +76,11 @@ public class AlignGraphsGenerator : MonoBehaviour
 
                 if (Physics.Raycast(NodeList[i].transform.position, right, out hit, 1))
                 {
-                    if (!NodeList[i].GetComponent<Node>().m_AdjacentNodeList.ContainsKey(hit.transform.gameObject))
-                    {
-                        NodeList[i].GetComponent<Node>().m_AdjacentNodeList.Add(hit.transform.gameObject, 1);
-                        hit.transform.gameObject.GetComponent<Node>().m_AdjacentNodeList.Add(NodeList[i], 1);
-
-                        graph[i, hit.transform.gameObject.GetComponent<Node>().id] = 1;
-                        graph[hit.transform.gameObject.GetComponent<Node>().id, i] = 1;
-                    }
+                    Edge edge = new Edge();
+                    edge.Cost = 1;
+                    edge.ConnectedNode = hit.transform.gameObject.GetComponent<Node>();
+                    NodeList[i].GetComponent<Node>().Connections.Add(edge);
+                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
                 }
             }
 
@@ -98,16 +89,14 @@ public class AlignGraphsGenerator : MonoBehaviour
 
                 if (Physics.Raycast(NodeList[i].transform.position, left, out hit, 1))
                 {
-                    if (!NodeList[i].GetComponent<Node>().m_AdjacentNodeList.ContainsKey(hit.transform.gameObject))
-                    {
-                        NodeList[i].GetComponent<Node>().m_AdjacentNodeList.Add(hit.transform.gameObject, 1);
-                        hit.transform.gameObject.GetComponent<Node>().m_AdjacentNodeList.Add(NodeList[i], 1);
-
-                        graph[i, hit.transform.gameObject.GetComponent<Node>().id] = 1;
-                        graph[hit.transform.gameObject.GetComponent<Node>().id, i] = 1;
-                    }
+                    Edge edge = new Edge();
+                    edge.Cost = 1;
+                    edge.ConnectedNode = hit.transform.gameObject.GetComponent<Node>();
+                    NodeList[i].GetComponent<Node>().Connections.Add(edge);
+                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
                 }
             }
+
         }
     }
 }

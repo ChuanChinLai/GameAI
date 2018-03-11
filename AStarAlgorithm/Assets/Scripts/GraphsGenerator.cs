@@ -20,7 +20,7 @@ public class GraphsGenerator : MonoBehaviour
     public List<GameObject> NodeList = new List<GameObject>();
 
 
-    private int nodeID = 0;
+    private int StartID = 0;
 
     // Use this for initialization
     void Start ()
@@ -42,6 +42,13 @@ public class GraphsGenerator : MonoBehaviour
 
             OutputToDisk();
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Reset the Nodes");
+
+            ResetNodes();
+        }
     }
 
 
@@ -52,8 +59,8 @@ public class GraphsGenerator : MonoBehaviour
 
             Vector3 pos = new Vector3(Random.Range(-BoxSize, BoxSize), Random.Range(-BoxSize, BoxSize), Random.Range(-BoxSize, BoxSize));
             GameObject GO = Instantiate(NodeGameObject, pos, Quaternion.identity);
-            GO.name = "Node" + nodeID;
-            GO.GetComponent<Node>().id = nodeID++;
+            GO.name = "Node" + StartID;
+            GO.GetComponent<Node>().Id = StartID++;
             NodeList.Add(GO);
         }
 
@@ -67,19 +74,38 @@ public class GraphsGenerator : MonoBehaviour
 
             int NumAdjacentEdges = Random.Range(1, MaxNumAdjacentEdges);
 
-            while (NodeList[i].GetComponent<Node>().m_AdjacentNodeList.Count < NumAdjacentEdges && tmpList.Count != 0)
+            while (NodeList[i].GetComponent<Node>().Connections.Count < NumAdjacentEdges && tmpList.Count != 0)
             {
                 int index = Random.Range(0, tmpList.Count);
 
+                if (tmpList[index].GetComponent<Node>().Connections.Count >= MaxNumAdjacentEdges)
+                    continue;
+
                 float dis = Vector3.Distance(NodeList[i].transform.position, tmpList[index].transform.position);
 
-                if (dis < MaxDistanceToBeNeighbor && !NodeList[i].GetComponent<Node>().m_AdjacentNodeList.ContainsKey(tmpList[index]))
+                if (dis < MaxDistanceToBeNeighbor)
                 {
-                    NodeList[i].GetComponent<Node>().m_AdjacentNodeList.Add(tmpList[index], dis);
-                    tmpList[index].GetComponent<Node>().m_AdjacentNodeList.Add(NodeList[i], dis);
+                    graph[i, tmpList[index].GetComponent<Node>().Id] = dis;
+                    graph[tmpList[index].GetComponent<Node>().Id, i] = dis;
 
-                    graph[i, tmpList[index].GetComponent<Node>().id] = dis;
-                    graph[tmpList[index].GetComponent<Node>().id, i] = dis;
+                    {
+                        Edge edge = new Edge();
+                        edge.Cost = dis;
+                        edge.ConnectedNode = tmpList[index].GetComponent<Node>();
+
+                        if(!NodeList[i].GetComponent<Node>().Connections.Contains(edge))
+                            NodeList[i].GetComponent<Node>().Connections.Add(edge);
+                    }
+
+                    {
+                        Edge edge = new Edge();
+                        edge.Cost = dis;
+                        edge.ConnectedNode = NodeList[i].GetComponent<Node>();
+
+                        if (!tmpList[index].GetComponent<Node>().Connections.Contains(edge))
+                            tmpList[index].GetComponent<Node>().Connections.Add(edge);
+                    }
+
 
                     tmpList.RemoveAt(index);
                 }
@@ -96,9 +122,9 @@ public class GraphsGenerator : MonoBehaviour
     {
         foreach (GameObject GO in NodeList)
         {
-            foreach (KeyValuePair<GameObject, float> node in GO.GetComponent<Node>().m_AdjacentNodeList)
+            foreach (Edge edge in GO.GetComponent<Node>().Connections)
             {
-                Debug.DrawLine(GO.transform.position, node.Key.transform.position, Color.red);
+                Debug.DrawLine(GO.transform.position, edge.ConnectedNode.gameObject.transform.position, Color.red);
             }
         }
     }
@@ -115,13 +141,24 @@ public class GraphsGenerator : MonoBehaviour
 
         foreach (GameObject GO in NodeList)
         {
-            foreach (KeyValuePair<GameObject, float> node in GO.GetComponent<Node>().m_AdjacentNodeList)
+            foreach (Edge edge in GO.GetComponent<Node>().Connections)
             {
-                sw.WriteLine("(" + GO.GetComponent<Node>().id.ToString() + "," + node.Key.GetComponent<Node>().id.ToString() + "," + node.Value + ")");
+                sw.WriteLine("(" + GO.GetComponent<Node>().Id.ToString() + "," + edge.ConnectedNode.Id.ToString() + "," + edge.Cost + ")");
             }
         }
 
         sw.Close();
+    }
+
+
+    void ResetNodes()
+    {
+        foreach (GameObject GO in NodeList)
+        {
+            GO.GetComponent<Node>().Visited = false;
+            GO.GetComponent<Node>().NearestToStart = null;
+            GO.GetComponent<Node>().MinCostToStart = null;
+        }
     }
 }
 

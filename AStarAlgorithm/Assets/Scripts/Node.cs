@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public int id;
-    public Dictionary<GameObject, float> m_AdjacentNodeList = new Dictionary<GameObject, float>();
+    public int Id;
+    public bool Visited { get; set; }
+    public double StraightLineDistanceToEnd { get; set; }
+    public double? MinCostToStart { get; set; }
+    public Node NearestToStart { get; set; }
 
-    public int adjSize = 0;
+    public List<Edge> Connections = new List<Edge>();
+
+
+    public int edgeSize = 0;
 
 	// Use this for initialization
 	void Start ()
@@ -18,14 +24,21 @@ public class Node : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        adjSize = m_AdjacentNodeList.Count;
-
+        edgeSize = Connections.Count;
     }
+
+
+    public double StraightLineDistanceTo(GameObject end)
+    {
+        return Vector3.Distance(gameObject.transform.position, end.transform.position);
+    }
+
 }
 
 
-public struct WeightToObject
+public class Edge
 {
-    public GameObject gameobject;
-    public float weight;
+ //   public double Length { get; set; }
+    public double Cost { get; set; }
+    public Node ConnectedNode { get; set; }
 }
