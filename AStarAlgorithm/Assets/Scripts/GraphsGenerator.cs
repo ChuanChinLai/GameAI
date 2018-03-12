@@ -33,22 +33,21 @@ public class GraphsGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DisplayGraphs();
+//        DisplayGraphs();
 
+        //if (Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    Debug.Log("Output Node");
 
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            Debug.Log("Output Node");
+        //    OutputToDisk();
+        //}
 
-            OutputToDisk();
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    Debug.Log("Reset the Nodes");
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log("Reset the Nodes");
-
-            ResetNodes();
-        }
+        //    ResetNodes();
+        //}
     }
 
 
@@ -135,7 +134,7 @@ public class GraphsGenerator : MonoBehaviour
     {
         StreamWriter sw;
 
-        string path = "C:\\Users\\u1070737\\Desktop\\Test2.txt";
+        string path = "C:\\Users\\u1070737\\Desktop\\AI2\\Map3.txt";
 
         sw = File.CreateText(path);
 
@@ -151,7 +150,7 @@ public class GraphsGenerator : MonoBehaviour
     }
 
 
-    void ResetNodes()
+    public void ResetNodes()
     {
         foreach (GameObject GO in NodeList)
         {

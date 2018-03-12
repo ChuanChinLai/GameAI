@@ -99,4 +99,16 @@ public class AlignGraphsGenerator : MonoBehaviour
 
         }
     }
+
+
+
+    public void ResetNodes()
+    {
+        foreach (GameObject GO in NodeList)
+        {
+            GO.GetComponent<Node>().Visited = false;
+            GO.GetComponent<Node>().NearestToStart = null;
+            GO.GetComponent<Node>().MinCostToStart = null;
+        }
+    }
 }

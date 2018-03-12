@@ -14,7 +14,9 @@ public class AStar : MonoBehaviour
     public GameObject EndObj;
 
 
-    int NodeVisits = 0;
+    public int NodeVisits = 0;
+    public float RunningTime = 0;
+    public double PathCost = 0;
 
     // Use this for initialization
     void Start()
@@ -25,20 +27,7 @@ public class AStar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("Run AStar");
 
-            var res = GetShortestPathAstart();
-
-            foreach (Node node in res)
-            {
-                Debug.Log(node.Id);
-            }
-
-            Debug.Log("Node Visited: " + NodeVisits);
-            Debug.Log("Total Distance: " + ShortestPathCost);
-        }
     }
 
 
@@ -56,16 +45,25 @@ public class AStar : MonoBehaviour
     {
         Node End = EndObj.GetComponent<Node>();
 
-        List<GameObject> NodeList = Map.GetComponent<GraphsGenerator>().NodeList;
+        List<GameObject> NodeList = Map.GetComponent<AlignGraphsGenerator>().NodeList;
 
         foreach (var GO in NodeList)
             GO.GetComponent<Node>().StraightLineDistanceToEnd = GO.GetComponent<Node>().StraightLineDistanceTo(EndObj);
 
+        RunningTime = 0;
+        var currentTime = Time.realtimeSinceStartup;
         AstarSearch();
+        RunningTime = Time.realtimeSinceStartup - currentTime;
+
+
         var shortestPath = new List<Node>();
         shortestPath.Add(End);
         BuildShortestPath(shortestPath, End);
         shortestPath.Reverse();
+
+
+        Map.GetComponent<AlignGraphsGenerator>().ResetNodes();
+
         return shortestPath;
     }
 
@@ -73,6 +71,7 @@ public class AStar : MonoBehaviour
     void AstarSearch()
     {
         NodeVisits = 0;
+        PathCost = 0;
         ShortestPathCost = 0;
 
         Node Start = StartObj.GetComponent<Node>();
@@ -96,8 +95,10 @@ public class AStar : MonoBehaviour
                     continue;
                 if (childNode.MinCostToStart == null || node.MinCostToStart + cnn.Cost < childNode.MinCostToStart)
                 {
+                    PathCost += cnn.Cost;
                     childNode.MinCostToStart = node.MinCostToStart + cnn.Cost;
                     childNode.NearestToStart = node;
+
                     if (!prioQueue.Contains(childNode))
                         prioQueue.Add(childNode);
                 }

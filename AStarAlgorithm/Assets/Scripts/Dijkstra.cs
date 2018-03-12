@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Dijkstra : MonoBehaviour
 {
-    public GameObject GraphsGenerator;
+    public GameObject Map;
     string Path;
 
     public double ShortestPathCost { get; private set; }
@@ -14,7 +14,10 @@ public class Dijkstra : MonoBehaviour
     public GameObject EndObj;
 
 
-    int NodeVisits = 0;
+    public int      NodeVisits = 0;
+    public float    RunningTime = 0;
+    public double   PathCost = 0;
+
 
     // Use this for initialization
     void Start ()
@@ -27,17 +30,17 @@ public class Dijkstra : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Debug.Log("Run DijkstraAlgorithm");
+            //Debug.Log("Running Dijkstra Algorithm...");
 
-            var res = GetShortestPathDijikstra();
+            //var res = GetShortestPathDijikstra();
 
-            foreach(Node node in res)
-            {
-                Debug.Log(node.Id);
-            }
+            //foreach(Node node in res)
+            //{
+            //    Debug.Log(node.Id);
+            //}
 
-            Debug.Log("Node Visited: " + NodeVisits);
-            Debug.Log("Total Distance: " + ShortestPathCost);
+            //Debug.Log("Node Visited: " + NodeVisits);
+            //Debug.Log("Total Distance: " + ShortestPathCost);
         }
 	}
 
@@ -56,11 +59,18 @@ public class Dijkstra : MonoBehaviour
     {
         Node End = EndObj.GetComponent<Node>();
 
+        RunningTime = 0;
+        var currentTime = Time.realtimeSinceStartup;
         DijkstraSearch();
+        RunningTime = Time.realtimeSinceStartup - currentTime;
+
         var shortestPath = new List<Node>();
         shortestPath.Add(End);
         BuildShortestPath(shortestPath, End);
         shortestPath.Reverse();
+
+        Map.GetComponent<GraphsGenerator>().ResetNodes();
+
         return shortestPath;
     }
 
@@ -68,6 +78,7 @@ public class Dijkstra : MonoBehaviour
     void DijkstraSearch()
     {
         NodeVisits = 0;
+        PathCost = 0;
         ShortestPathCost = 0;
 
         Node Start = StartObj.GetComponent<Node>();
@@ -91,8 +102,10 @@ public class Dijkstra : MonoBehaviour
                     continue;
                 if (childNode.MinCostToStart == null || node.MinCostToStart + cnn.Cost < childNode.MinCostToStart)
                 {
+                    PathCost += cnn.Cost;
                     childNode.MinCostToStart = node.MinCostToStart + cnn.Cost;
                     childNode.NearestToStart = node;
+
                     if (!prioQueue.Contains(childNode))
                         prioQueue.Add(childNode);
                 }
