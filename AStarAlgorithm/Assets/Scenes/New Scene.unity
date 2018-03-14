@@ -162,13 +162,12 @@ Prefab:
       propertyPath: Food
       value: 
       objectReference: {fileID: 1224969583}
-    - target: {fileID: 114521953803816568, guid: a28df705d8758ae47a1bf372f0d773da,
-        type: 2}
-      propertyPath: SnakeBodyObject
-      value: 
-      objectReference: {fileID: 1688656846262538, guid: 3b8a609b0fc2a88418820153dba92e78,
-        type: 2}
-    m_RemovedComponents: []
+    - target: {fileID: 1721240797081518, guid: a28df705d8758ae47a1bf372f0d773da, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: a28df705d8758ae47a1bf372f0d773da, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &293715973
@@ -497,23 +496,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1091566969663626, guid: 83376a1cbb1b4864d9a5ede9bd75e3ef,
     type: 2}
   m_PrefabInternal: {fileID: 1085269242}
---- !u!1 &1472523076 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1721240797081518, guid: a28df705d8758ae47a1bf372f0d773da,
-    type: 2}
-  m_PrefabInternal: {fileID: 121140074}
---- !u!114 &1472523082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1472523076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35a26fdb26e953d40b238af16152b801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  next: {fileID: 0}
 --- !u!1 &1626865214
 GameObject:
   m_ObjectHideFlags: 0

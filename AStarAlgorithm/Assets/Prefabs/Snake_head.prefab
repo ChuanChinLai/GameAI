@@ -20,9 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4599897387401528}
   - component: {fileID: 33194169762470016}
-  - component: {fileID: 136737967326318586}
+  - component: {fileID: 135126787889799594}
   - component: {fileID: 23851764415681252}
   - component: {fileID: 114521953803816568}
+  - component: {fileID: 114523357609983588}
   m_Layer: 0
   m_Name: Snake_head
   m_TagString: Untagged
@@ -81,7 +82,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721240797081518}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &114521953803816568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -96,16 +97,30 @@ MonoBehaviour:
   Map: {fileID: 0}
   AStarObject: {fileID: 0}
   Food: {fileID: 0}
---- !u!136 &136737967326318586
-CapsuleCollider:
+  SnakeBodyObject: {fileID: 1688656846262538, guid: 3b8a609b0fc2a88418820153dba92e78,
+    type: 2}
+--- !u!114 &114523357609983588
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1721240797081518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35a26fdb26e953d40b238af16152b801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  next: {fileID: 0}
+  PrevPosition: {x: 0, y: 0, z: 0}
+--- !u!135 &135126787889799594
+SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721240797081518}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

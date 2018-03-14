@@ -12,6 +12,8 @@ public class AlignGraphsGenerator : MonoBehaviour
     public float[,] graph;
     private int nodeID = 0;
 
+    GameObject snake;
+
     // Use this for initialization
     void Start()
     {
@@ -24,7 +26,10 @@ public class AlignGraphsGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(snake == null)
+        {
+            snake = GameObject.Find("Snake_head");
+        }
     }
 
     void CreateGraphs()
@@ -41,9 +46,28 @@ public class AlignGraphsGenerator : MonoBehaviour
             }
         }
 
+        CalculateEdges();
+    }
+
+
+
+    public void CalculateEdges()
+    {
         for (int i = 0; i < NodeList.Count; i++)
         {
+            NodeList[i].GetComponent<Node>().Connections.Clear();
+
             RaycastHit hit;
+
+            {
+                Vector3 up = NodeList[i].transform.TransformDirection(Vector3.up);
+
+                if (Physics.Raycast(NodeList[i].transform.position, up, out hit, 5) && hit.transform.gameObject.tag == "Player" && Vector3.Distance(hit.transform.position, snake.transform.position) > 0.1f)
+                {
+                    continue;
+                }
+            }
+
 
             {
                 Vector3 fwd = NodeList[i].transform.TransformDirection(Vector3.forward);
@@ -54,7 +78,7 @@ public class AlignGraphsGenerator : MonoBehaviour
                     edge.Cost = 1;
                     edge.ConnectedNode = hit.transform.gameObject.GetComponent<Node>();
                     NodeList[i].GetComponent<Node>().Connections.Add(edge);
-                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
+//                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
                 }
             }
 
@@ -67,7 +91,7 @@ public class AlignGraphsGenerator : MonoBehaviour
                     edge.Cost = 1;
                     edge.ConnectedNode = hit.transform.gameObject.GetComponent<Node>();
                     NodeList[i].GetComponent<Node>().Connections.Add(edge);
-                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
+ //                   graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
                 }
             }
 
@@ -80,7 +104,7 @@ public class AlignGraphsGenerator : MonoBehaviour
                     edge.Cost = 1;
                     edge.ConnectedNode = hit.transform.gameObject.GetComponent<Node>();
                     NodeList[i].GetComponent<Node>().Connections.Add(edge);
-                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
+//                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
                 }
             }
 
@@ -93,13 +117,12 @@ public class AlignGraphsGenerator : MonoBehaviour
                     edge.Cost = 1;
                     edge.ConnectedNode = hit.transform.gameObject.GetComponent<Node>();
                     NodeList[i].GetComponent<Node>().Connections.Add(edge);
-                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
+//                    graph[i, hit.transform.gameObject.GetComponent<Node>().Id] = 1;
                 }
             }
 
         }
     }
-
 
 
     public void ResetNodes()
