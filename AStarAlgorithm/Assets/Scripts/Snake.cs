@@ -8,8 +8,11 @@ public class Snake : MonoBehaviour
     public GameObject AStarObject;
     public GameObject Food;
     public GameObject SnakeBodyObject;
+    public GameObject NodeObject;
 
     List<Node> Path;
+    Color NodeColor;
+
 
     int step = 1;
     int size = 0;
@@ -21,7 +24,7 @@ public class Snake : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-
+        NodeColor = NodeObject.GetComponent<Renderer>().sharedMaterial.color;
     }
 	
 	// Update is called once per frame
@@ -88,6 +91,15 @@ public class Snake : MonoBehaviour
     {
         RaycastHit hit;
 
+        if(Path != null)
+        {
+            foreach (Node node in Path)
+            {
+                node.gameObject.GetComponent<Renderer>().material.color = NodeColor;
+            }
+        }
+
+
         {
             if (Physics.Raycast(transform.position, Vector3.down, out hit, 1))
             {
@@ -110,6 +122,14 @@ public class Snake : MonoBehaviour
         }
 
         Path = AStarObject.GetComponent<AStar>().GetShortestPathAstart();
+
+
+        foreach (Node node in Path)
+        {
+            node.gameObject.GetComponent<Renderer>().material.color = Color.red;
+        }
+
+
     }
 
 
@@ -123,22 +143,6 @@ public class Snake : MonoBehaviour
             thisbody = nextbody;
             nextbody = nextbody.transform.GetComponent<SnakeBody>().next;
         }
-
-        //GameObject nextBody = gameObject.GetComponent<SnakeBody>().next;
-
-        //GameObject newBody = Instantiate(SnakeBodyObject, transform.position, Quaternion.identity);
-        //gameObject.GetComponent<SnakeBody>().PrevPosition = transform.position;
-        //transform.position = Food.transform.position;
-
-
-        //gameObject.GetComponent<SnakeBody>().next = newBody;
-        //newBody.GetComponent<SnakeBody>().next = nextBody;
-
-        //if(nextBody != null)
-        //{
-        //    newBody.GetComponent<SnakeBody>().PrevPosition = nextBody.transform.position;
-        //}
-
 
 
         Vector3 newPos = thisbody.GetComponent<SnakeBody>().PrevPosition;

@@ -166,6 +166,12 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114521953803816568, guid: a28df705d8758ae47a1bf372f0d773da,
+        type: 2}
+      propertyPath: NodeObject
+      value: 
+      objectReference: {fileID: 1154654987970540, guid: a7097ffbb4f6c244c9b3a3a279a964cb,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: a28df705d8758ae47a1bf372f0d773da, type: 2}
@@ -245,9 +251,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NodeGameObject: {fileID: 1450395789987586, guid: e89b2606d20f165498858bae762d179f,
     type: 2}
-  NumNodes: 20000
+  NumNodes: 5000
   MaxNumAdjacentEdges: 3
-  BoxSize: 50
+  BoxSize: 100
   MaxDistanceToBeNeighbor: 100
   NodeList: []
 --- !u!4 &410535617

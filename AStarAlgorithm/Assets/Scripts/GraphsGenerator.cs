@@ -33,7 +33,7 @@ public class GraphsGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-//        DisplayGraphs();
+        DisplayGraphs();
 
         //if (Input.GetKeyDown(KeyCode.Return))
         //{
