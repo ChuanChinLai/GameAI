@@ -43,6 +43,11 @@ public class AStar : MonoBehaviour
 
     public List<Node> GetShortestPathAstart()
     {
+        if(EndObj == null)
+        {
+            return null;
+        }
+
         Node End = EndObj.GetComponent<Node>();
 
         List<GameObject> NodeList = Map.GetComponent<AlignGraphsGenerator>().NodeList;
@@ -60,7 +65,6 @@ public class AStar : MonoBehaviour
         shortestPath.Add(End);
         BuildShortestPath(shortestPath, End);
         shortestPath.Reverse();
-
 
         Map.GetComponent<AlignGraphsGenerator>().ResetNodes();
 
@@ -91,7 +95,7 @@ public class AStar : MonoBehaviour
             foreach (var cnn in node.Connections.OrderBy(x => x.Cost))
             {
                 var childNode = cnn.ConnectedNode;
-                if (childNode.Visited)
+                if (childNode == null || childNode.Visited)
                     continue;
                 if (childNode.MinCostToStart == null || node.MinCostToStart + cnn.Cost < childNode.MinCostToStart)
                 {

@@ -54,7 +54,6 @@ public class Snake : MonoBehaviour
             {
                 NumFoods++;
 
-                Debug.Log("EAT FOOD");
                 Debug.Log(snakeSize + NumFoods / 2);
 
  //               UpdateBody();
@@ -99,13 +98,10 @@ public class Snake : MonoBehaviour
             }
         }
 
-
         {
             if (Physics.Raycast(transform.position, Vector3.down, out hit, 1))
             {
                 AStarObject.GetComponent<AStar>().StartObj = hit.transform.gameObject;
-//                Debug.Log(hit.transform.gameObject);
-
             }
             else if(Path != null)
             {
@@ -116,7 +112,6 @@ public class Snake : MonoBehaviour
             if (Physics.Raycast(Food.transform.position, Vector3.down, out hit, 1))
             {
                 AStarObject.GetComponent<AStar>().EndObj = hit.transform.gameObject;
- //               Debug.Log(hit.transform.gameObject);
             }
 
         }
@@ -124,13 +119,120 @@ public class Snake : MonoBehaviour
         Path = AStarObject.GetComponent<AStar>().GetShortestPathAstart();
 
 
-        foreach (Node node in Path)
+        if(Path == null || Path.Count <= 1)
         {
-            node.gameObject.GetComponent<Renderer>().material.color = Color.red;
+            Debug.Log("Can't find a path, looking for a new path");
+            StartWandering();
+        }
+
+        if(Path != null)
+        {
+            foreach (Node node in Path)
+            {
+                node.gameObject.GetComponent<Renderer>().material.color = Color.red;
+            }
+        }
+
+    }
+
+    void StartWandering()
+    {
+        Debug.Log("Wandering...");
+        RaycastHit hit;
+
+        GameObject potentialNode = null;
+        int biggestSpace = 0;
+
+        if (Physics.Raycast(transform.position + new Vector3(1, 0, 0), Vector3.down, out hit, 1))
+        {
+            Vector3 dir = new Vector3(1, 0, 0);
+            int space = LookingForSpace(transform.position + dir, dir);
+            
+            if(space > biggestSpace)
+            {
+                biggestSpace = space;
+
+                if (Physics.Raycast(transform.position + space * dir, Vector3.down, out hit, 1))
+                {
+                    potentialNode = hit.transform.gameObject;
+                }
+            }
+        }
+
+        if (Physics.Raycast(transform.position + new Vector3(-1, 0, 0), Vector3.down, out hit, 1))
+        {
+            Vector3 dir = new Vector3(-1, 0, 0);
+            int space = LookingForSpace(transform.position + dir, dir);
+
+            if (space > biggestSpace)
+            {
+                biggestSpace = space;
+
+                if (Physics.Raycast(transform.position + space * dir, Vector3.down, out hit, 1))
+                {
+                    potentialNode = hit.transform.gameObject;
+                }
+            }
+        }
+
+        if (Physics.Raycast(transform.position + new Vector3(0, 0, 1), Vector3.down, out hit, 1))
+        {
+            Vector3 dir = new Vector3(0, 0, 1);
+            int space = LookingForSpace(transform.position + dir, dir);
+
+            if (space > biggestSpace)
+            {
+                biggestSpace = space;
+
+                if (Physics.Raycast(transform.position + space * dir, Vector3.down, out hit, 1))
+                {
+                    potentialNode = hit.transform.gameObject;
+                }
+            }
+
+        }
+
+        if (Physics.Raycast(transform.position + new Vector3(0, 0, -1), Vector3.down, out hit, 1))
+        {
+            Vector3 dir = new Vector3(0, 0, -1);
+            int space = LookingForSpace(transform.position + dir, dir);
+
+            if (space > biggestSpace)
+            {
+                biggestSpace = space;
+
+                if (Physics.Raycast(transform.position + space * dir, Vector3.down, out hit, 1))
+                {
+                    potentialNode = hit.transform.gameObject;
+                }
+            }
         }
 
 
+        AStarObject.GetComponent<AStar>().EndObj = potentialNode;
+        Path = AStarObject.GetComponent<AStar>().GetShortestPathAstart();
     }
+
+    int LookingForSpace(Vector3 startPoint, Vector3 dir)
+    {
+        RaycastHit hit;
+        Vector3 currentPoint = startPoint + new Vector3(0, 1, 0);
+
+        int space = 0;
+
+        while(Physics.Raycast(currentPoint, Vector3.down, out hit, 10))
+        {
+            if (hit.transform.gameObject.tag != "Node")
+                break;
+
+            currentPoint += dir;
+            space++;
+        }
+
+        return space;
+    }
+
+
 
 
     void AddBody()
